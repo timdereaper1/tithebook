@@ -11,9 +11,9 @@ export async function createNewTitheEntry(data: AddTithe, userId: number) {
 export async function findTitheEntriesForUser(userId: number) {
 	const knex = getDBConnection();
 	const tithes = await knex<DBTithe>('tithes')
-		.select('id', 'description', 'date', 'createdAt', 'updatedAt', 'amount', 'isPaid')
+		.select('id', 'description', 'date', 'amount', 'isPaid')
 		.where('userId', userId)
-		.orderBy('createdAt', 'desc');
+		.orderBy('created_at', 'desc');
 	return tithes.map(formatTitheEntryForDB);
 }
 

@@ -9,8 +9,8 @@ export interface DBTithe {
 	id: number;
 	amount: number;
 	date: string;
-	createdAt: string;
-	updatedAt: string;
+	created_at: string;
+	updated_at: string;
 	description: string | null;
 	userId: number;
 	isPaid: boolean;
