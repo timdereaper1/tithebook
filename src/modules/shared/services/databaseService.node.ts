@@ -1,6 +1,7 @@
 import knex from 'knex';
+import config from '../../../../knexfile';
 
 export function getDBConnection<T>() {
-	const connectionURI = `${process.env.DATABASE_URL}`;
-	return knex<T>(connectionURI);
+	const options = config[process.env.NODE_ENV ?? 'development'];
+	return knex<T>(options);
 }
