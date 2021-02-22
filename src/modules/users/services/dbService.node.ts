@@ -20,10 +20,10 @@ export async function findUserByEmailAndPassword({ email, password }: LoginCrede
 export async function createNewUser(args: SignUpCredentials) {
 	const knex = getDBConnection();
 	return knex.transaction(async (transaction) => {
-		const [id] = await transaction<DBUser>('users').insert(args);
+		await transaction.insert(args).into('users');
 		const [user] = await transaction<DBUser>('users')
 			.select('username', 'email', 'id')
-			.where('id', id);
+			.where('email', args.email);
 		return user;
 	});
 }
