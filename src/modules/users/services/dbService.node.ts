@@ -2,7 +2,7 @@ import bcryptjs from 'bcryptjs';
 import { LoginCredentials } from '../../auth/login/@types';
 import { SignUpCredentials } from '../../auth/signup/@types';
 import { getDBConnection } from '../../shared/services/databaseService.node';
-import { createBadRequestError } from '../../shared/services/errorService';
+import { createAuthorizationError } from '../../shared/services/errorService';
 import type { DBUser } from '../@types';
 
 export async function findUserByEmailAndPassword({ email, password }: LoginCredentials) {
@@ -10,8 +10,9 @@ export async function findUserByEmailAndPassword({ email, password }: LoginCrede
 	const [user] = await knex('users')
 		.select('email', 'id', 'password', 'username')
 		.where('email', email);
+	if (!user) throw createAuthorizationError('User does not exist');
 	const matches = await bcryptjs.compare(password, user.password);
-	if (!matches) throw createBadRequestError('User does not exist');
+	if (!matches) throw createAuthorizationError('User does not exist');
 	const { password: notNeededPassword, ...other } = user;
 	return other;
 }

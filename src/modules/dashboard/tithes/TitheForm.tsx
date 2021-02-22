@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { Button, Form, Label, Modal } from 'semantic-ui-react';
+import { FormEvent, useMemo } from 'react';
+import { Button, CheckboxProps, Form, Label, Modal } from 'semantic-ui-react';
 import useForm from '../../shared/hooks/useForm';
 import { emitReload } from '../../shared/services/eventService';
 import type { AddTithe, Tithe } from './@types';
@@ -38,6 +38,10 @@ function TitheForm({ active, onClose, tithe }: TitheFormProps) {
 	function handleClose() {
 		onClose();
 		form.resetForm();
+	}
+
+	function handleRadioChange(_: FormEvent<HTMLInputElement>, data: CheckboxProps) {
+		form.setFieldValue('isPaid', data.value === 'yes');
 	}
 
 	return (
@@ -79,16 +83,18 @@ function TitheForm({ active, onClose, tithe }: TitheFormProps) {
 							inline
 							value="yes"
 							checked={form.values.isPaid}
-							onChange={form.handleChange}
+							onChange={handleRadioChange}
 							label="Yes"
 							onBlur={form.handleBlur}
+							id="isPaid"
 						/>
 						<Form.Radio
 							name="isPaid"
 							inline
 							value="no"
 							checked={!form.values.isPaid}
-							onChange={form.handleChange}
+							id="isPaid"
+							onChange={handleRadioChange}
 							label="No"
 							onBlur={form.handleBlur}
 						/>
