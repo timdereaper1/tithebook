@@ -9,10 +9,8 @@ import { createNewUser } from '../../../modules/users/services/dbService.node';
 async function signUpHandler(req: NextApiRequest, res: NextApiResponse) {
 	const credentials: SignUpCredentials = req.body.data;
 	const HASH_SALT = 10;
-	const newUser = await createNewUser({
-		...credentials,
-		password: await bcryptjs.hash(credentials.password, HASH_SALT)
-	});
+	const password = bcryptjs.hashSync(credentials.password, HASH_SALT);
+	const newUser = await createNewUser({ ...credentials, password });
 	const token = createSignedToken(newUser);
 	const { id, ...other } = newUser;
 	const data: AuthenticatedUser = { ...other, token };
