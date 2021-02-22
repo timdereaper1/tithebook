@@ -15,7 +15,7 @@ async function signUpHandler(req: NextApiRequest, res: NextApiResponse) {
 	});
 	const token = createSignedToken(newUser);
 	const { id, ...other } = newUser;
-	const data: AuthenticatedUser = { token, ...other };
+	const data: AuthenticatedUser = { ...other, token };
 	res.status(201).json({ data });
 }
 

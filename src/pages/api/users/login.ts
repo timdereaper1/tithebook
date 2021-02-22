@@ -10,7 +10,7 @@ async function loginHandler(req: NextApiRequest, res: NextApiResponse) {
 	const user = await findUserByEmailAndPassword(credentials);
 	const token = createSignedToken(user);
 	const { id, ...other } = user;
-	const data: AuthenticatedUser = { token, ...other };
+	const data: AuthenticatedUser = { ...other, token };
 	res.status(201).json({ data });
 }
 
